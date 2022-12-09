@@ -5,6 +5,8 @@ import classNames from 'classnames';
 export interface SliderRef {
   nextSlide(): void;
   prevSlide(): void;
+  hasPrevSlide(): void;
+  hasNextSlide(): void;
 }
 
 export enum SliderAxis {
@@ -209,6 +211,15 @@ export default class Slider
         this.calculateStyles(false, 0, 0)
       }
     }
+  }
+
+  public hasNextSlide() {
+    let gridWidth = (this.mainDivRef.current?.clientWidth ?? 0) / (this.props.visibleCount ?? 1)
+    return this.currentX >= this.calculateMaxTranslation(gridWidth, this.wrapperDivRef.current?.children.length ?? 0, this.props.visibleCount ?? 1);
+  }
+
+  public hasPrevSlide() {
+    return this.currentX < 0;
   }
 
   render() {
